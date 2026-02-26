@@ -194,11 +194,11 @@ const FETCH_ORDER_BY_ID = `
  * Fetches orders updated after a specific date (for incremental sync)
  */
 const FETCH_ORDERS_UPDATED_SINCE = `
-  query fetchOrdersUpdatedSince($updatedAtMin: DateTime!, $first: Int!, $after: String) {
+  query fetchOrdersUpdatedSince($query: String, $first: Int!, $after: String) {
     orders(
       first: $first
       after: $after
-      query: "updated_at:>='${updatedAtMin}'"
+      query: $query
       sortKey: UPDATED_AT
     ) {
       edges {
