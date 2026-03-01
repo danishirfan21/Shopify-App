@@ -58,51 +58,11 @@ class CallbackController {
         logger.error('Initial sync failed', { shop, error: error.message });
       });
 
-      // Redirect to app dashboard or success page
-      res.send(`
-        <!DOCTYPE html>
-        <html>
-        <head>
-          <title>Installation Successful</title>
-          <style>
-            body {
-              font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
-              display: flex;
-              justify-content: center;
-              align-items: center;
-              height: 100vh;
-              margin: 0;
-              background: #f6f6f7;
-            }
-            .container {
-              text-align: center;
-              background: white;
-              padding: 40px;
-              border-radius: 8px;
-              box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-            }
-            h1 { color: #5c6ac4; margin-bottom: 16px; }
-            p { color: #637381; margin-bottom: 24px; }
-            .button {
-              display: inline-block;
-              padding: 12px 24px;
-              background: #5c6ac4;
-              color: white;
-              text-decoration: none;
-              border-radius: 4px;
-            }
-          </style>
-        </head>
-        <body>
-          <div class="container">
-            <h1>✓ Installation Successful!</h1>
-            <p>Your Shopify Attribution & Order Inspector app has been installed.</p>
-            <p>Initial data sync is running in the background.</p>
-            <a href="/api/orders" class="button">View API Documentation</a>
-          </div>
-        </body>
-        </html>
-      `);
+      // Redirect to app dashboard (embedded app URL)
+      const host = Buffer.from(`${shop}/admin`).toString('base64');
+      const redirectUrl = `https://${shop}/admin/apps/${process.env.SHOPIFY_API_KEY}?host=${host}`;
+
+      res.redirect(redirectUrl);
     } catch (error) {
       next(error);
     }
