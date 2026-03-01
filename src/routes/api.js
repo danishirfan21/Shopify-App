@@ -6,14 +6,14 @@
 const express = require('express');
 const OrdersController = require('../controllers/api/OrdersController');
 const AttributionController = require('../controllers/api/AttributionController');
-const { authenticate } = require('../middleware/authentication');
+const { sessionTokenAuth } = require('../middleware/sessionTokenAuth');
 const { asyncHandler } = require('../middleware/errorHandler');
 const { apiLimiter } = require('../middleware/rateLimiting');
 
 const router = express.Router();
 
 // Apply authentication and rate limiting to all API routes
-router.use(authenticate);
+router.use(sessionTokenAuth);
 router.use(apiLimiter);
 
 /**
